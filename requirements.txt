@@ -1,0 +1,27 @@
+# Executed environment. Install the matching CUDA build of torch/torchvision first.
+setuptools==80.10.2
+torch==2.10.0
+torchvision==0.25.0
+openai-clip==1.0.1
+numpy==2.4.4
+scipy==1.17.1
+scikit-learn==1.8.0
+joblib==1.5.3
+Pillow==12.2.0
+imagecorruptions==1.1.2
+scikit-image==0.26.0
+opencv-python-headless==4.13.0.92
+imageio==2.37.3
+tifffile==2026.3.3
+ftfy==6.3.1
+regex==2026.4.4
+tqdm==4.67.3
+matplotlib==3.10.9
+pytest==8.4.1
+pypdf==6.10.2
+pypdfium2==5.13.0
+ruff==0.12.11
+# Frozen SCUNet extension; checkpoint and small data are downloaded explicitly.
+einops==0.8.2
+timm==0.9.7
+ultralytics-thop==2.0.20
