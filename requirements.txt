@@ -21,7 +21,3 @@ pytest==8.4.1
 pypdf==6.10.2
 pypdfium2==5.13.0
 ruff==0.12.11
-# Frozen SCUNet extension; checkpoint and small data are downloaded explicitly.
-einops==0.8.2
-timm==0.9.7
-ultralytics-thop==2.0.20

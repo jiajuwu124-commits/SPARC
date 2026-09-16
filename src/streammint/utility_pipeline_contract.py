@@ -262,7 +262,6 @@ def validate_label_sources(manifest_path: Path) -> tuple[dict[str, Any], dict[st
         except (KeyError, ValueError, OSError) as error:
             errors.append(f"descriptor shard validation failed: {scenario}: {error}")
 
-    matrix_protocol_hash = canonical_sha256(matrix)
     indexed: dict[
         tuple[str, str], tuple[Path, dict[str, Any], dict[str, Any], str]
     ] = {}

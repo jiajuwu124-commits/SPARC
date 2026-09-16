@@ -13,7 +13,6 @@ import argparse
 import csv
 import hashlib
 import json
-import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -93,8 +92,8 @@ def main() -> None:
     reference_summary = require_file(EVIDENCE / "main/reference_summary.json")
     reference_table1 = require_file(EVIDENCE / "main/reference_table1.csv")
     dataset = require_file(EVIDENCE / "development/utility_targets_dev15.npz")
-    router_report = require_file(EVIDENCE / "development/router_report.json")
-    reference_suite = EVIDENCE / "development/reference_suite"
+    transitions = require_file(EVIDENCE / "development/per_image_transitions.npz")
+    reference_suite = EVIDENCE / "development/reference_per_image_suite"
 
     rebuilt_summary = output / "main/summary.json"
     run([
@@ -111,24 +110,24 @@ def main() -> None:
 
     suite = output / "development_suite"
     run([
-        python, str(SCRIPTS / "run_sparc_development_experiment_suite.py"),
-        "--dataset", str(dataset), "--router-report", str(router_report),
+        python, str(SCRIPTS / "run_sparc_per_image_development_suite.py"),
+        "--dataset", str(dataset), "--transitions", str(transitions),
         "--output-dir", str(suite),
     ])
     run([
-        python, str(SCRIPTS / "audit_sparc_development_suite.py"),
+        python, str(SCRIPTS / "audit_sparc_per_image_development_suite.py"),
         "--suite", str(suite), "--dataset", str(dataset),
-        "--router-report", str(router_report),
+        "--transitions", str(transitions),
     ])
     for filename in (
-        "table2_router_controls.csv", "table3_expert_bank_ablation.csv",
-        "table3_gate_ablation.csv", "data_efficiency.csv",
+        "table2_router_controls.csv", "table3_ablations.csv",
+        "table3_nested_expert_bank_complete.csv", "data_efficiency.csv",
     ):
         compare_csv(suite / filename, require_file(reference_suite / filename))
 
     artifacts = output / "paper_artifacts"
     run([
-        python, str(SCRIPTS / "generate_sparc_followup_artifacts.py"),
+        python, str(SCRIPTS / "generate_sparc_final_artifacts.py"),
         "--suite", str(suite), "--summary", str(rebuilt_summary),
         "--output-dir", str(artifacts),
     ])
@@ -166,6 +165,8 @@ def main() -> None:
         "main_result_conditions": 75,
         "raw_prediction_records_checked": 300000,
         "development_rows_recomputed": 15000,
+        "development_metric": "realized per-image DeltaAcc/Fix/Break",
+        "development_gate_calibration": "strict nested inner-OOF within each outer training fold",
         "development_csvs_exactly_matched": 4,
         "tables_regenerated": [1, 2, 3],
         "result_figures_regenerated": [2, 3, 4],

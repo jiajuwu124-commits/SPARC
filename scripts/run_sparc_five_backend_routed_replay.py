@@ -711,7 +711,6 @@ def run(
     features = common.FeatureProvider(manifest)
     images = common.StreamImages()
     kind = manifest["backend"]["kind"]
-    evaluation = manifest.get("evaluation_contract", {})
     row_ids = [str(row.get("image_id", row["sample"])) for row in rows]
     prompt_sha = canonical_sha256(manifest["backend"].get("prompt"))
     ids_sha = hashlib.sha256(
